@@ -1,0 +1,26 @@
+#screen {
+    border: 1px solid #888;
+}
+
+.studio-label {
+    margin-right: 1rem; 
+}
+
+#frame-tracker-row {
+    display: flex;
+    width: 1000px;
+}
+
+#frame-tracker {
+    font-size: 13px;
+    text-anchor: middle;
+}
+
+#frame-tracker .tick-mark{
+    stroke: black;
+    stroke: 1px;
+}
+
+#frame-tracker .background {
+    fill: #eee;
+}

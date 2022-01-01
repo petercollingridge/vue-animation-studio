@@ -3,7 +3,7 @@
 }
 
 .studio-label {
-    margin-right: 1rem; 
+    width: 60px;
 }
 
 #frame-tracker-row {
@@ -23,4 +23,25 @@
 
 #frame-tracker .background {
     fill: #eee;
+}
+
+.attribute-control-row {
+    display: flex;
+}
+
+.attribute-control {
+    width: 1000px;
+    height: 100px;
+    border: 1px solid #888;
+}
+
+.control-point {
+    fill: orange;
+    stroke: orange;
+    stroke-width: 0;
+    cursor: move;
+}
+
+.control-point:hover {
+    stroke-width: 2;
 }

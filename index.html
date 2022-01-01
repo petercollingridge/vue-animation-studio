@@ -31,7 +31,7 @@
             <div class="attribute-control-row">
                 <div class="studio-label">x:</div>
                 <svg class="attribute-control" v-on:mousemove="drag" v-on:mouseup="deselect">
-                    <control-point :position="{ x: 20, y: 40}"/>
+                    <control-point :initial-x="20" :initial-y="40" />
                 </svg>
             </div>
         </div>

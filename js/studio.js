@@ -1,5 +1,5 @@
 Vue.component('control-point', {
-    props: ['position'],
+    props: ['initialX', 'initialY'],
     template: '<circle class="control-point" :cx="computedX" :cy="computedY" v-on:mousedown="select" :r="5" />',
     data() {
         return {
@@ -9,23 +9,15 @@ Vue.component('control-point', {
     },
     computed: {
         computedX() {
-            if (this.x !== undefined) {
-                return this.x;
-            } else {
-                return this.position.x;
-            }
+            return (this.x !== undefined) ? this.x : this.initialX;
         },
         computedY() {
-            if (this.y !== undefined) {
-                return this.y;
-            } else {
-                return this.position.y;
-            }
+            return (this.y !== undefined) ? this.y : this.initialY;
         },
     },
     methods: {
         select: function(evt) {
-            this.$parent.selected = this;   
+            this.$parent.selected = this;
             this.startX = this.computedX - evt.clientX;
             this.startY = this.computedY - evt.clientY;
         },

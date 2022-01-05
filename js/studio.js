@@ -1,5 +1,10 @@
+Vue.component('control-line', {
+    props: ['x1', 'y1', 'x2', 'y2'],
+    template: '<line class="control-line" :x1="x1" :y1="y1" :x2="x2" :y2="y2" />',
+});
+
 Vue.component('control-point', {
-    props: ['x', 'y', 'index',],
+    props: ['x', 'y', 'index'],
     template: '<circle class="control-point" :cx="x" :cy="y" v-on:mousedown="select" :r="5" />',
     methods: {
         select: function(evt) {
@@ -25,6 +30,14 @@ Vue.component('attribute-control', {
         <div class="attribute-control-row">
             <div class="studio-label">x:</div>
             <svg class="attribute-control" :height="height" v-on:mousemove="drag" v-on:mouseup="deselect">
+                <line
+                    v-for="i in controlPoints.length - 1"
+                    class="control-line"
+                    :x1="controlPoints[i - 1].x * 10"
+                    :y1="controlPoints[i - 1].y"
+                    :x2="controlPoints[i].x * 10"
+                    :y2="controlPoints[i].y"
+                />
                 <control-point
                     v-for="(controlPoint, index) in controlPoints"
                     :key="index"

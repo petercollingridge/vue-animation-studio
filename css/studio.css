@@ -44,3 +44,8 @@
 .control-point:hover {
     stroke-width: 2;
 }
+
+.control-line {
+    stroke: rgb(64, 95, 237);
+    stroke-width: 2;
+}

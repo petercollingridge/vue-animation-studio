@@ -1,34 +1,11 @@
 Vue.component('control-point', {
-    props: ['initialX', 'initialY', 'constrain'],
-    template: '<circle class="control-point" :cx="computedX" :cy="computedY" v-on:mousedown="select" :r="5" />',
-    data() {
-        return {
-            x: undefined,
-            y: undefined,
-        };
-    },
-    computed: {
-        computedX() {
-            return (this.x !== undefined) ? this.x : this.initialX;
-        },
-        computedY() {
-            return (this.y !== undefined) ? this.y : this.initialY;
-        },
-    },
+    props: ['x', 'y', 'index',],
+    template: '<circle class="control-point" :cx="x" :cy="y" v-on:mousedown="select" :r="5" />',
     methods: {
         select: function(evt) {
-            this.$parent.selected = this;
-            this.startX = this.computedX - evt.clientX;
-            this.startY = this.computedY - evt.clientY;
+            this.$parent.selected = this.index;
+            this.$parent.startY = this.y - evt.clientY;
         },
-        drag: function(dx, dy) {
-            if (this.constrain !== 'x') {
-                this.x = this.startX + dx;
-            }
-            if (this.constrain !== 'y') {
-                this.y = this.startY + dy;
-            }
-        }
     },
 });
 
@@ -36,6 +13,8 @@ Vue.component('attribute-control', {
     props: ['height', 'numFrames'],
     data() {
         return {
+            selected: false,
+            startY: null,
             controlPoints: [
                 { x: 1, y: 50 },
                 { x: 100, y: 50 },
@@ -47,18 +26,20 @@ Vue.component('attribute-control', {
             <div class="studio-label">x:</div>
             <svg class="attribute-control" :height="height" v-on:mousemove="drag" v-on:mouseup="deselect">
                 <control-point
-                    v-for="controlPoint in controlPoints"
-                    :initial-x="controlPoint.x * 10"
-                    :initial-y="controlPoint.y"
-                    constrain="x"
+                    v-for="(controlPoint, index) in controlPoints"
+                    :key="index"
+                    :x="controlPoint.x * 10"
+                    :y="controlPoint.y"
+                    :index="index"
                 />
             </svg>
         </div>
     `,
     methods: {
         drag: function(evt) {
-            if (this.selected) {
-                this.selected.drag(evt.clientX, evt.clientY);
+            if (this.selected !== false) {
+                const controlPoint = this.controlPoints[this.selected];
+                controlPoint.y = this.startY + evt.clientY;
             }
         },
         deselect: function() {

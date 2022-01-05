@@ -34,12 +34,24 @@ Vue.component('control-point', {
 
 Vue.component('attribute-control', {
     props: ['height', 'numFrames'],
+    data() {
+        return {
+            controlPoints: [
+                { x: 1, y: 50 },
+                { x: 100, y: 50 },
+            ],
+        };
+    },
     template: `
         <div class="attribute-control-row">
             <div class="studio-label">x:</div>
             <svg class="attribute-control" :height="height" v-on:mousemove="drag" v-on:mouseup="deselect">
-                <control-point :initial-x="10" :initial-y="40" constrain="x" />
-                <control-point :initial-x="990" :initial-y="40" constrain="x" />
+                <control-point
+                    v-for="controlPoint in controlPoints"
+                    :initial-x="controlPoint.x * 10"
+                    :initial-y="controlPoint.y"
+                    constrain="x"
+                />
             </svg>
         </div>
     `,

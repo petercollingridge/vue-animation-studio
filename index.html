@@ -30,8 +30,9 @@
             </div>
             <div class="attribute-control-row">
                 <div class="studio-label">x:</div>
-                <svg class="attribute-control" v-on:mousemove="drag" v-on:mouseup="deselect">
-                    <control-point :initial-x="20" :initial-y="40" />
+                <svg class="attribute-control" :height="height" v-on:mousemove="drag" v-on:mouseup="deselect">
+                    <control-point :initial-x="10" :initial-y="40" constrain="x" />
+                    <control-point :initial-x="990" :initial-y="40" constrain="x" />
                 </svg>
             </div>
         </div>

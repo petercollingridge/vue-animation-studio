@@ -28,13 +28,7 @@
                     <line class="tick-mark" v-for="i in numFrames" :x1="i * 10" :x2="i * 10" y1="15" y2="20" />
                 </svg>
             </div>
-            <div class="attribute-control-row">
-                <div class="studio-label">x:</div>
-                <svg class="attribute-control" :height="height" v-on:mousemove="drag" v-on:mouseup="deselect">
-                    <control-point :initial-x="10" :initial-y="40" constrain="x" />
-                    <control-point :initial-x="990" :initial-y="40" constrain="x" />
-                </svg>
-            </div>
+            <attribute-control name="x" :height="height" />
         </div>
 
         <script src="js/studio.js"></script>

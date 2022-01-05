@@ -32,12 +32,17 @@ Vue.component('control-point', {
     },
 });
 
-const app = new Vue({
-    el: '#app',
-    data: {
-        numFrames: 100,
-        height: 100,
-    },
+Vue.component('attribute-control', {
+    props: ['height', 'numFrames'],
+    template: `
+        <div class="attribute-control-row">
+            <div class="studio-label">x:</div>
+            <svg class="attribute-control" :height="height" v-on:mousemove="drag" v-on:mouseup="deselect">
+                <control-point :initial-x="10" :initial-y="40" constrain="x" />
+                <control-point :initial-x="990" :initial-y="40" constrain="x" />
+            </svg>
+        </div>
+    `,
     methods: {
         drag: function(evt) {
             if (this.selected) {
@@ -47,5 +52,13 @@ const app = new Vue({
         deselect: function() {
             this.selected = false;
         }
-    }
+    },
+});
+
+const app = new Vue({
+    el: '#app',
+    data: {
+        numFrames: 100,
+        height: 100,
+    },
 })

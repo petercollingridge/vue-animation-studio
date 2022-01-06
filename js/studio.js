@@ -27,27 +27,35 @@ Vue.component('attribute-control', {
         };
     },
     template: `
-        <div class="attribute-control-row">
-            <div class="studio-label">x:</div>
-            <svg class="attribute-control" :height="height" v-on:mousemove="drag" v-on:mouseup="deselect">
-                <line
-                    v-for="i in controlPoints.length - 1"
-                    class="control-line"
-                    :x1="controlPoints[i - 1].x * 10"
-                    :y1="controlPoints[i - 1].y"
-                    :x2="controlPoints[i].x * 10"
-                    :y2="controlPoints[i].y"
-                />
-                <control-point
-                    v-for="(controlPoint, index) in controlPoints"
-                    :key="index"
-                    :x="controlPoint.x * 10"
-                    :y="controlPoint.y"
-                    :index="index"
-                />
-            </svg>
-        </div>
+        <svg
+            class="attribute-control"
+            :height="height"
+            :viewBox="viewbox"
+            v-on:mousemove="drag"
+            v-on:mouseup="deselect"
+        >
+            <line
+                v-for="i in controlPoints.length - 1"
+                class="control-line"
+                :x1="controlPoints[i - 1].x * 10"
+                :y1="controlPoints[i - 1].y"
+                :x2="controlPoints[i].x * 10"
+                :y2="controlPoints[i].y"
+            />
+            <control-point
+                v-for="(controlPoint, index) in controlPoints"
+                :key="index"
+                :x="controlPoint.x * 10"
+                :y="controlPoint.y"
+                :index="index"
+            />
+        </svg>
     `,
+    computed: {
+        viewbox: function() {
+            return `0 0 1010 ${this.height}`;
+        }
+    },
     methods: {
         drag: function(evt) {
             if (this.selected !== false) {
@@ -64,7 +72,7 @@ Vue.component('attribute-control', {
 const app = new Vue({
     el: '#app',
     data: {
-        numFrames: 100,
+        numFrames: 30,
         height: 100,
     },
 })

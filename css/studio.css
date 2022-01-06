@@ -2,18 +2,23 @@
     border: 1px solid #888;
 }
 
-.studio-label {
-    width: 60px;
+.controls-container {
+    width: 1000px;
+    border: 1px solid #aaa;
+    display: grid;
+    grid-template-columns: 60px auto;
+    grid-template-rows: auto;
 }
 
-#frame-tracker-row {
-    display: flex;
-    width: 1000px;
+.studio-label {
+    border-right: 1px solid #888;
+    border-bottom: 1px solid #888;
 }
 
 #frame-tracker {
     font-size: 13px;
     text-anchor: middle;
+    border-bottom: 1px solid #888;
 }
 
 #frame-tracker .tick-mark{
@@ -25,13 +30,9 @@
     fill: #eee;
 }
 
-.attribute-control-row {
-    display: flex;
-}
-
 .attribute-control {
-    width: 1010px;
-    border: 1px solid #888;
+    width: 100%;
+    border-bottom: 1px solid #888;
 }
 
 .control-point {

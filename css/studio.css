@@ -15,18 +15,18 @@
     border-bottom: 1px solid #888;
 }
 
-#frame-tracker {
+.frame-tracker {
     font-size: 13px;
     text-anchor: middle;
     border-bottom: 1px solid #888;
 }
 
-#frame-tracker .tick-mark{
+.frame-tracker .tick-mark {
     stroke: black;
     stroke: 1px;
 }
 
-#frame-tracker .background {
+.frame-tracker .background {
     fill: #eee;
 }
 

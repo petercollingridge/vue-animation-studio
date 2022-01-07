@@ -73,10 +73,10 @@ Vue.component('attribute-control', {
 });
 
 Vue.component('frame-tracker', {
-    // props: ['numFrames'],
+    props: ['numFrames'],
     data: function() {
         return {
-            numFrames: 100,
+            // numFrames: 100,
         }
     },
     template: `
@@ -85,7 +85,7 @@ Vue.component('frame-tracker', {
             <text v-for="frame in frames" :x="getX(frame)" y="13">
                 {{frame}}
             </text>
-            <line class="tick-mark" v-for="i in numFrames" :x1="i * 10" :x2="i * 10" y1="15" y2="20" />
+            <line class="tick-mark" v-for="i in numFrames" :x1="getX(i)" :x2="getX(i)" y1="15" y2="20" />
         </svg>
     `,
     computed: {
@@ -108,7 +108,7 @@ Vue.component('frame-tracker', {
 const app = new Vue({
     el: '#app',
     data: {
-        numFrames: 100,
+        numFrames: 60,
         height: 100,
     },
     methods: {

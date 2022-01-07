@@ -41,6 +41,11 @@
     border-bottom: 1px solid #888;
 }
 
+.attribute-control .frame-line {
+    stroke: red;
+    opacity: 0.3;
+}
+
 .control-point {
     fill: orange;
     stroke: orange;

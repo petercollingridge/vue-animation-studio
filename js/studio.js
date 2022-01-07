@@ -15,14 +15,14 @@ Vue.component('control-point', {
 });
 
 Vue.component('attribute-control', {
-    props: ['height', 'numFrames'],
+    props: ['height', 'numFrames', 'selectedFrame'],
     data() {
         return {
             selected: false,
             startY: null,
             controlPoints: [
                 { x: 1, y: 50 },
-                { x: 100, y: 50 },
+                { x: 60, y: 50 },
             ],
         };
     },
@@ -35,11 +35,18 @@ Vue.component('attribute-control', {
             v-on:mouseup="deselect"
         >
             <line
+                class="frame-line"
+                :x1="getX(selectedFrame)"
+                :x2="getX(selectedFrame)"
+                y1="1"
+                :y2="height - 1"
+            />
+            <line
                 v-for="i in controlPoints.length - 1"
                 class="control-line"
                 :x1="getX(controlPoints[i - 1].x)"
-                :y1="controlPoints[i - 1].y"
                 :x2="getX(controlPoints[i].x)"
+                :y1="controlPoints[i - 1].y"
                 :y2="controlPoints[i].y"
             />
             <control-point
@@ -53,7 +60,7 @@ Vue.component('attribute-control', {
     `,
     computed: {
         viewbox: function() {
-            return `0 0 1010 ${this.height}`;
+            return `0 0 1000 ${this.height}`;
         }
     },
     methods: {
@@ -73,12 +80,11 @@ Vue.component('attribute-control', {
 });
 
 Vue.component('frame-tracker', {
-    props: ['numFrames'],
+    props: ['numFrames', 'selectedFrame'],
     data: function() {
         return {
             selected: false,
             selectorX: 10,
-            selectedFrame: 1,
         }
     },
     template: `
@@ -116,7 +122,10 @@ Vue.component('frame-tracker', {
         drag: function(evt) {
             if (this.selected) {
                 this.selectorX = this.startX + evt.clientX;
-                this.selectedFrame = this.$parent.getFrame(this.selectorX);
+                const frame = this.$parent.getFrame(this.selectorX);
+                if (frame !== this.selectedFrame) {
+                    this.$parent.setFrame(frame);
+                }
             }
         },
         deselect: function() {
@@ -129,6 +138,7 @@ const app = new Vue({
     el: '#app',
     data: {
         numFrames: 60,
+        selectedFrame: 1,
         height: 100,
         padding: 10,
     },
@@ -140,7 +150,10 @@ const app = new Vue({
         },
         getFrame: function(x) {
             const dx = (1000 - this.padding * 2) / (this.numFrames - 1);
-            return Math.round((x - this.padding) / dx);
+            return Math.round(0.5 + (x - this.padding) / dx);
+        },
+        setFrame: function(frame) {
+            this.selectedFrame = frame;
         }
     }
 })

@@ -16,9 +16,15 @@
 }
 
 .frame-tracker {
-    font-size: 13px;
-    text-anchor: middle;
     border-bottom: 1px solid #888;
+}
+
+.frame-tracker text {
+    font-size: 12px;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
 }
 
 .frame-tracker .tick-mark {

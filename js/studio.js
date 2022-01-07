@@ -76,16 +76,22 @@ Vue.component('frame-tracker', {
     props: ['numFrames'],
     data: function() {
         return {
-            // numFrames: 100,
+            selected: false,
+            selectorX: false,
+            selectedFrame: 1,
         }
     },
     template: `
-        <svg class="frame-tracker" viewBox="0 0 1010 20">
+        <svg class="frame-tracker" viewBox="0 0 1010 20" v-on:mousemove="drag" v-on:mouseup="deselect">
             <rect class="background" width="1010" height="20" />
-            <text v-for="frame in frames" :x="getX(frame)" y="13">
+            <text v-for="frame in frames" :x="getX(frame)" y="9">
                 {{frame}}
             </text>
             <line class="tick-mark" v-for="i in numFrames" :x1="getX(i)" :x2="getX(i)" y1="15" y2="20" />
+            <circle class="control-point" :cx="getX(selectedFrame)" :cy="9" v-on:mousedown="select" :r="7" />
+            <text :x="getX(selectedFrame)" y="9">
+                {{selectedFrame}}
+            </text>
         </svg>
     `,
     computed: {
@@ -101,6 +107,20 @@ Vue.component('frame-tracker', {
     methods: {
         getX: function(frame) {
             return this.$parent.getX(frame);
+        },
+        select: function(evt) {
+            this.selected = true;
+            this.selectorX = this.getX(this.selectedFrame);
+            this.startX = this.selectorX - evt.clientX;
+        },
+        drag: function(evt) {
+            if (this.selected) {
+                this.selectorX = this.startX + evt.clientX;
+                this.selectedFrame = this.$parent.getFrame(this.selectorX);
+            }
+        },
+        deselect: function() {
+            this.selected = false;
         }
     }
 });
@@ -110,13 +130,17 @@ const app = new Vue({
     data: {
         numFrames: 60,
         height: 100,
+        padding: 10,
     },
     methods: {
-        getX: function(x) {
-            // Map frames 1 to numFrames to range 0 - 1000 with some padding
-            const padding = 10;
-            const dx = (1000 - padding * 2) / (this.numFrames - 1);
-            return padding + (x - 1) * dx;
+        // Map frames in range 1 to numFrames to x  position in range 0 - 1000 with some padding
+        getX: function(frame) {
+            const dx = (1000 - this.padding * 2) / (this.numFrames - 1);
+            return this.padding + (frame - 1) * dx;
+        },
+        getFrame: function(x) {
+            const dx = (1000 - this.padding * 2) / (this.numFrames - 1);
+            return Math.round(0.5 + (x - this.padding) / dx);
         }
     }
 })

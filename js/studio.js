@@ -4,8 +4,8 @@ Vue.component('control-line', {
 });
 
 Vue.component('control-point', {
-    props: ['x', 'y', 'index'],
-    template: '<circle class="control-point" :cx="x" :cy="y" v-on:mousedown="select" :r="5" />',
+    props: ['x', 'y', 'r', 'index'],
+    template: '<circle class="control-point" :cx="x" :cy="y" v-on:mousedown="select" :r="r" />',
     methods: {
         select: function(evt) {
             this.$parent.selected = this.index;
@@ -20,10 +20,12 @@ Vue.component('attribute-control', {
         return {
             selected: false,
             startY: null,
+            controlPointR: 5,
             controlPoints: [
                 { x: 1, y: 50 },
                 { x: 60, y: 50 },
             ],
+            range: [0, 1000],
         };
     },
     template: `
@@ -54,14 +56,43 @@ Vue.component('attribute-control', {
                 :key="index"
                 :x="getX(controlPoint.x)"
                 :y="controlPoint.y"
+                :r="controlPointR"
                 :index="index"
+            >
+            </control-point>
+            <circle
+                class="frame-attribute"
+                :cx="getX(selectedFrame)"
+                :cy="selectedFrameY"
+                r="3"
             />
         </svg>
     `,
     computed: {
         viewbox: function() {
             return `0 0 1000 ${this.height}`;
-        }
+        },
+        selectedFrameY: function() {
+            // Find which two control points, the selected frame is between
+            let startPoint;
+            let endPoint;
+            for (let i = 1; i < this.controlPoints.length; i++) {
+                if (this.selectedFrame <= this.controlPoints[i].x) {
+                    startPoint = this.controlPoints[i - 1];
+                    endPoint = this.controlPoints[i];
+                }
+            }
+            // Lerp to get how close we are to start and end frame
+            const p = (this.selectedFrame - startPoint.x) / (endPoint.x - startPoint.x);
+            const y = (1 - p) * startPoint.y + p * endPoint.y;
+            return y;
+        },
+        attributeValue: function() {
+            const y = this.selectedFrameY();
+            // y is in the range 0 - height. Map this to range of values
+            const dRange = this.range[1] - this.range[0];
+            return y / this.height * dRange + this.range[0];
+        },
     },
     methods: {
         getX: function(x) {
@@ -71,6 +102,11 @@ Vue.component('attribute-control', {
             if (this.selected !== false) {
                 const controlPoint = this.controlPoints[this.selected];
                 controlPoint.y = this.startY + evt.clientY;
+                if (controlPoint.y < this.controlPointR)  {
+                    controlPoint.y = this.controlPointR;
+                } else if (controlPoint.y > this.height - this.controlPointR)  {
+                    controlPoint.y = this.height - this.controlPointR;
+                }
             }
         },
         deselect: function() {
@@ -145,6 +181,7 @@ const app = new Vue({
         selectedFrame: 1,
         height: 100,
         padding: 10,
+        objectX: 40,
     },
     methods: {
         // Map frames in range 1 to numFrames to x  position in range 0 - 1000 with some padding

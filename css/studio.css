@@ -2,6 +2,10 @@
     border: 1px solid #888;
 }
 
+.actor { 
+    fill:rgb(64, 95, 237)   
+}
+
 .controls-container {
     width: 1000px;
     border: 1px solid #aaa;
@@ -44,6 +48,10 @@
 .attribute-control .frame-line {
     stroke: red;
     opacity: 0.3;
+}
+
+.frame-attribute {
+    fill: red;  
 }
 
 .control-point {

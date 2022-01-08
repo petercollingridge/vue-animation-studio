@@ -88,7 +88,7 @@ Vue.component('frame-tracker', {
         }
     },
     template: `
-        <svg class="frame-tracker" viewBox="0 0 1000 20" v-on:mousemove="drag" v-on:mouseup="deselect">
+        <svg class="frame-tracker" ref="svg" viewBox="0 0 1000 20" v-on:mousemove="drag" v-on:mouseup="deselect">
             <rect class="background" width="1000" height="20" />
             <text v-for="frame in frames" :x="getX(frame)" y="9">
                 {{frame}}
@@ -107,7 +107,7 @@ Vue.component('frame-tracker', {
             for (let i = dFrames; i <= this.numFrames; i += dFrames) {
                 frames.push(i);
             }
-            return frames;
+            return frames; 
         },
     },
     methods: {
@@ -117,11 +117,13 @@ Vue.component('frame-tracker', {
         select: function(evt) {
             this.selected = true;
             this.selectorX = this.selectorX;
-            this.startX = this.selectorX - evt.clientX;
+            const CTM = this.$refs.svg.getScreenCTM();
+            this.startX = this.selectorX - (evt.clientX - CTM.e) / CTM.a;
         },
         drag: function(evt) {
             if (this.selected) {
-                this.selectorX = this.startX + evt.clientX;
+                const CTM = this.$refs.svg.getScreenCTM();
+                this.selectorX = this.startX + (evt.clientX - CTM.e) / CTM.a;
                 const frame = this.$parent.getFrame(this.selectorX);
                 if (frame !== this.selectedFrame) {
                     this.$parent.setFrame(frame);
@@ -150,7 +152,7 @@ const app = new Vue({
         },
         getFrame: function(x) {
             const dx = (1000 - this.padding * 2) / (this.numFrames - 1);
-            return Math.round(0.5 + (x - this.padding) / dx);
+            return Math.round((x - this.padding) / dx) + 1;
         },
         setFrame: function(frame) {
             this.selectedFrame = frame;

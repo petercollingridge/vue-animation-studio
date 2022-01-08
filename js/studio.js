@@ -132,6 +132,8 @@ Vue.component('frame-tracker', {
         },
         deselect: function() {
             this.selected = false;
+            const frame = this.$parent.getFrame(this.selectorX);
+            this.selectorX = this.$parent.getX(this.selectedFrame);
         }
     }
 });

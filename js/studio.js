@@ -146,7 +146,6 @@ Vue.component('frame-tracker', {
         <div class="control-row">
             <div class="studio-label">Frame</div>
             <svg class="frame-tracker" ref="svg" viewBox="0 0 1000 20" v-on:mousemove="drag" v-on:mouseup="deselect">
-                <rect class="background" width="1000" height="20" />
                 <text v-for="frame in frames" :x="getX(frame)" y="9">
                     {{frame}}
                 </text>

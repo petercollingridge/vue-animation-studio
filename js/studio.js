@@ -32,7 +32,7 @@ Vue.component('attribute-control', {
     template: `
         <div class="control-row">
             <div class="studio-label">
-                {{name}}: {{attributeValue}}
+                {{name}}: {{attributeValue | round}}
             </div>
             <svg
                 class="attribute-control"
@@ -98,8 +98,13 @@ Vue.component('attribute-control', {
             const y = this.selectedFrameY;
             // y is in the range 0 - height. Map this to range of values
             const dRange = this.range[1] - this.range[0];
-            return y / this.height * dRange + this.range[0];
+            return (this.height - y) / this.height * dRange + this.range[0];
         },
+    },
+    filters: {
+        round: function(n) {
+            return n.toLocaleString(undefined, { maximumFractionDigits: 1});
+        }
     },
     methods: {
         getX: function(x) {

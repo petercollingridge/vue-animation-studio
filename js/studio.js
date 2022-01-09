@@ -32,7 +32,8 @@ Vue.component('attribute-control', {
     template: `
         <div class="control-row">
             <div class="studio-label">
-                {{name}}: {{attributeValue | round}}
+                <div class="attribute-name">{{name}}</div>
+                <div>{{attributeValue | round}}</div>
             </div>
             <svg
                 class="attribute-control"

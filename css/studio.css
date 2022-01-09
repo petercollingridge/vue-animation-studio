@@ -13,17 +13,26 @@
 
 .control-row {
     display: flex;
+    border-bottom: 1px solid #888;
 }
 
 .studio-label {
-    width: 60px;
+    width: 50px;
+    font-size: 13px;
     padding-left: 5px;
     border-right: 1px solid #888;
-    border-bottom: 1px solid #888;
 }
 
-.frame-tracker {
-    border-bottom: 1px solid #888;
+.control-row .studio-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.attribute-name {
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .frame-tracker text {
@@ -46,7 +55,6 @@
 .attribute-control {
     flex-grow: 1;
     width: 100%;
-    border-bottom: 1px solid #888;
 }
 
 .attribute-control .frame-line {

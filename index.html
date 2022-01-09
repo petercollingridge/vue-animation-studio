@@ -19,10 +19,8 @@
             </svg>
 
             <div class="controls-container">
-                <div class="studio-label">Frame:</div>
                 <frame-tracker :num-frames="numFrames" :selected-frame="selectedFrame"></frame-tracker>
-                <div class="studio-label">x</div>
-                <attribute-control :height="height" :selected-frame="selectedFrame"></attribute-control>
+                <attribute-control name="x" :height="height" :selected-frame="selectedFrame"></attribute-control>
             </div>
         </div>
 

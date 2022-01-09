@@ -15,7 +15,7 @@ Vue.component('control-point', {
 });
 
 Vue.component('attribute-control', {
-    props: ['height', 'numFrames', 'selectedFrame'],
+    props: ['name', 'height', 'numFrames', 'selectedFrame'],
     data() {
         return {
             selected: false,
@@ -23,50 +23,56 @@ Vue.component('attribute-control', {
             controlPointR: 5,
             controlPoints: [
                 { x: 1, y: 50 },
+                { x: 20, y: 50 },
                 { x: 60, y: 50 },
             ],
             range: [0, 1000],
         };
     },
     template: `
-        <svg
-            class="attribute-control"
-            :height="height"
-            :viewBox="viewbox"
-            v-on:mousemove="drag"
-            v-on:mouseup="deselect"
-        >
-            <line
-                class="frame-line"
-                :x1="getX(selectedFrame)"
-                :x2="getX(selectedFrame)"
-                y1="1"
-                :y2="height - 1"
-            />
-            <line
-                v-for="i in controlPoints.length - 1"
-                class="control-line"
-                :x1="getX(controlPoints[i - 1].x)"
-                :x2="getX(controlPoints[i].x)"
-                :y1="controlPoints[i - 1].y"
-                :y2="controlPoints[i].y"
-            />
-            <control-point
-                v-for="(controlPoint, index) in controlPoints"
-                :key="index"
-                :x="getX(controlPoint.x)"
-                :y="controlPoint.y"
-                :r="controlPointR"
-                :index="index"
+        <div class="control-row">
+            <div class="studio-label">
+                {{name}}: {{attributeValue}}
+            </div>
+            <svg
+                class="attribute-control"
+                :height="height"
+                :viewBox="viewbox"
+                v-on:mousemove="drag"
+                v-on:mouseup="deselect"
             >
-            </control-point>
-            <circle
-                class="frame-attribute"
-                :cx="getX(selectedFrame)"
-                :cy="selectedFrameY"
-                r="3"
-            />
-        </svg>
+                <line
+                    class="frame-line"
+                    :x1="getX(selectedFrame)"
+                    :x2="getX(selectedFrame)"
+                    y1="1"
+                    :y2="height - 1"
+                />
+                <line
+                    v-for="i in controlPoints.length - 1"
+                    class="control-line"
+                    :x1="getX(controlPoints[i - 1].x)"
+                    :x2="getX(controlPoints[i].x)"
+                    :y1="controlPoints[i - 1].y"
+                    :y2="controlPoints[i].y"
+                />
+                <control-point
+                    v-for="(controlPoint, index) in controlPoints"
+                    :key="index"
+                    :x="getX(controlPoint.x)"
+                    :y="controlPoint.y"
+                    :r="controlPointR"
+                    :index="index"
+                >
+                </control-point>
+                <circle
+                    class="frame-attribute"
+                    :cx="getX(selectedFrame)"
+                    :cy="selectedFrameY"
+                    r="3"
+                />
+            </svg>
+        </div>    
     `,
     computed: {
         viewbox: function() {
@@ -80,6 +86,7 @@ Vue.component('attribute-control', {
                 if (this.selectedFrame <= this.controlPoints[i].x) {
                     startPoint = this.controlPoints[i - 1];
                     endPoint = this.controlPoints[i];
+                    break;
                 }
             }
             // Lerp to get how close we are to start and end frame
@@ -88,7 +95,7 @@ Vue.component('attribute-control', {
             return y;
         },
         attributeValue: function() {
-            const y = this.selectedFrameY();
+            const y = this.selectedFrameY;
             // y is in the range 0 - height. Map this to range of values
             const dRange = this.range[1] - this.range[0];
             return y / this.height * dRange + this.range[0];
@@ -124,17 +131,20 @@ Vue.component('frame-tracker', {
         }
     },
     template: `
-        <svg class="frame-tracker" ref="svg" viewBox="0 0 1000 20" v-on:mousemove="drag" v-on:mouseup="deselect">
-            <rect class="background" width="1000" height="20" />
-            <text v-for="frame in frames" :x="getX(frame)" y="9">
-                {{frame}}
-            </text>
-            <line class="tick-mark" v-for="i in numFrames" :x1="getX(i)" :x2="getX(i)" y1="15" y2="20" />
-            <circle class="control-point" :cx="selectorX" :cy="9" v-on:mousedown="select" :r="7" />
-            <text :x="selectorX" y="9">
-                {{selectedFrame}}
-            </text>
-        </svg>
+        <div class="control-row">
+            <div class="studio-label">Frame</div>
+            <svg class="frame-tracker" ref="svg" viewBox="0 0 1000 20" v-on:mousemove="drag" v-on:mouseup="deselect">
+                <rect class="background" width="1000" height="20" />
+                <text v-for="frame in frames" :x="getX(frame)" y="9">
+                    {{frame}}
+                </text>
+                <line class="tick-mark" v-for="i in numFrames" :x1="getX(i)" :x2="getX(i)" y1="15" y2="20" />
+                <circle class="control-point" :cx="selectorX" :cy="9" v-on:mousedown="select" :r="7" />
+                <text :x="selectorX" y="9">
+                    {{selectedFrame}}
+                </text>
+            </svg>
+        </div>
     `,
     computed: {
         frames: function() {

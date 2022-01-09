@@ -9,12 +9,15 @@
 .controls-container {
     width: 1000px;
     border: 1px solid #aaa;
-    display: grid;
-    grid-template-columns: 60px auto;
-    grid-template-rows: auto;
+}
+
+.control-row {
+    display: flex;
 }
 
 .studio-label {
+    width: 60px;
+    padding-left: 5px;
     border-right: 1px solid #888;
     border-bottom: 1px solid #888;
 }
@@ -41,6 +44,7 @@
 }
 
 .attribute-control {
+    flex-grow: 1;
     width: 100%;
     border-bottom: 1px solid #888;
 }
@@ -52,6 +56,7 @@
 
 .frame-attribute {
     fill: red;  
+    pointer-events: none;
 }
 
 .control-point {

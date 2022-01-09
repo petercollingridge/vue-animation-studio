@@ -15,7 +15,7 @@ Vue.component('control-point', {
 });
 
 Vue.component('attribute-control', {
-    props: ['name', 'height', 'numFrames', 'selectedFrame'],
+    props: ['name', 'value', 'height', 'numFrames', 'selectedFrame'],
     data() {
         return {
             selected: false,
@@ -96,10 +96,14 @@ Vue.component('attribute-control', {
             return y;
         },
         attributeValue: function() {
+            // Calculate attribute value based on the current frame and the control points
             const y = this.selectedFrameY;
-            // y is in the range 0 - height. Map this to range of values
-            const dRange = this.range[1] - this.range[0];
-            const value = (this.height - y) / this.height * dRange + this.range[0];
+
+            // y is in the range 0 - height with padding equal to controlPointR.
+            const dDomain = this.height - this.controlPointR * 2;
+            const p = (this.height - this.controlPointR - y) / dDomain;
+            // Map this to range of values that the attribute can take
+            const value = (1 - p) * this.range[0] + p * this.range[1];
             this.$parent.updateActor(this.name, value);
             return value;
         },

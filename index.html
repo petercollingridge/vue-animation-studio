@@ -20,7 +20,13 @@
 
             <div class="controls-container">
                 <frame-tracker :num-frames="numFrames" :selected-frame="selectedFrame"></frame-tracker>
-                <attribute-control v-for="(value, name) in actor" :name="name" :height="height" :selected-frame="selectedFrame">
+                <attribute-control
+                    v-for="(value, name) in actor"
+                    :name="name"
+                    :value="value"
+                    :height="height"
+                    :selected-frame="selectedFrame"
+                >
                 </attribute-control>
             </div>
         </div>

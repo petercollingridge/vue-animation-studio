@@ -98,12 +98,14 @@ Vue.component('attribute-control', {
             const y = this.selectedFrameY;
             // y is in the range 0 - height. Map this to range of values
             const dRange = this.range[1] - this.range[0];
-            return (this.height - y) / this.height * dRange + this.range[0];
+            const value = (this.height - y) / this.height * dRange + this.range[0];
+            this.$parent.updateActor(this.name, value);
+            return value;
         },
     },
     filters: {
         round: function(n) {
-            return n.toLocaleString(undefined, { maximumFractionDigits: 1});
+            return n.toLocaleString(undefined, { maximumFractionDigits: 1 });
         }
     },
     methods: {
@@ -196,7 +198,10 @@ const app = new Vue({
         selectedFrame: 1,
         height: 100,
         padding: 10,
-        objectX: 40,
+        actor: {
+            x: 40,
+            y: 200,
+        },
     },
     methods: {
         // Map frames in range 1 to numFrames to x  position in range 0 - 1000 with some padding
@@ -210,6 +215,9 @@ const app = new Vue({
         },
         setFrame: function(frame) {
             this.selectedFrame = frame;
-        }
+        },
+        updateActor: function(attr, value) {
+            this.actor = Object.assign(this.actor, { [attr]: value });
+        },
     }
 })

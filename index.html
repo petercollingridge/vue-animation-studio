@@ -15,7 +15,9 @@
 
         <div id="app">
             <svg id="screen" width="1000" height="400">
-                <rect class="actor" :x="actor.x" :y="actor.y" width="80" height="80">
+                <g :transform="getTransform(actor)">
+                    <rect class="actor" x="-40" y="-40" width="80" height="80">
+                </g>
             </svg>
 
             <div class="controls-container">

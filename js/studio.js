@@ -1,6 +1,7 @@
 const ATTRIBRUTE_RANGES = {
     x: [0, 1000],
     y: [0, 400],
+    rotate: [0, 360],
 };
 
 Vue.component('control-line', {
@@ -210,9 +211,13 @@ const app = new Vue({
         actor: {
             x: 40,
             y: 200,
+            rotate: 0,
         },
     },
     methods: {
+        getTransform(actor) {
+            return `translate(${actor.x}, ${actor.y}) rotate(${actor.rotate})`;
+        },
         // Map frames in range 1 to numFrames to x  position in range 0 - 1000 with some padding
         getX: function(frame) {
             const dx = (1000 - this.padding * 2) / (this.numFrames - 1);

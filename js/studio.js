@@ -1,3 +1,8 @@
+const ATTRIBRUTE_RANGES = {
+    x: [0, 1000],
+    y: [0, 400],
+};
+
 Vue.component('control-line', {
     props: ['x1', 'y1', 'x2', 'y2'],
     template: '<line class="control-line" :x1="x1" :y1="y1" :x2="x2" :y2="y2" />',
@@ -25,8 +30,7 @@ Vue.component('attribute-control', {
                 { x: 1, y: 50 },
                 { x: 20, y: 50 },
                 { x: 60, y: 50 },
-            ],
-            range: [0, 1000],
+            ]
         };
     },
     template: `
@@ -103,7 +107,8 @@ Vue.component('attribute-control', {
             const dDomain = this.height - this.controlPointR * 2;
             const p = (this.height - this.controlPointR - y) / dDomain;
             // Map this to range of values that the attribute can take
-            const value = (1 - p) * this.range[0] + p * this.range[1];
+            const range = ATTRIBRUTE_RANGES[this.name];
+            const value = (1 - p) * range[0] + p * range[1];
             this.$parent.updateActor(this.name, value);
             return value;
         },

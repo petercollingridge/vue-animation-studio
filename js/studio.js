@@ -208,6 +208,7 @@ const app = new Vue({
         selectedFrame: 1,
         height: 100,
         padding: 10,
+        buttonSize: 16,
         actor: {
             x: 40,
             y: 200,

@@ -82,3 +82,21 @@
     stroke: rgb(64, 95, 237);
     stroke-width: 2;
 }
+
+.play-controls {
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+}
+
+.play-btn svg path {
+    stroke: rgb(64, 95, 237);
+    stroke-width: 2;
+    fill: none;
+    stroke-linejoin: round;
+}
+
+.play-btn svg:hover {
+    stroke: rgb(44, 65, 255);
+    cursor: pointer;
+}

@@ -20,6 +20,19 @@
                 </g>
             </svg>
 
+            <div class="play-controls">
+                <span class="play-btn">
+                    <svg :width="buttonSize" :height="buttonSize" viewBox="0 0 16 16">
+                        <path d="M2 2L14 8 2 14z"/>
+                    </svg>
+                </span>
+                <span class="play-btn">
+                    <svg :width="buttonSize" :height="buttonSize" viewBox="0 0 16 16">
+                        <path d="M6 2V14M10 2V14"/>
+                    </svg>
+                </span>
+            </div>
+
             <div class="controls-container">
                 <frame-tracker :num-frames="numFrames" :selected-frame="selectedFrame"></frame-tracker>
                 <attribute-control
